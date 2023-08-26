@@ -4,41 +4,37 @@ import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.models.Account;
 import java.util.Set;
 
-	public class ClientDTO {
-		private long id;
-		private String firstName;
-		private String lastName;
-		private String email;
+public class ClientDTO {
+	private long id;
+	private String firstName;
+	private String lastName;
+	private String email;
 
-		private Set<AccountDTO> accountList;
-		public ClientDTO() {
-		}
+	private Set<AccountDTO> accountList;
+	public ClientDTO() {
+	}
 
-		public ClientDTO(Client client) {
-			this.id = client.getId();
-			this.firstName = client.getFirstName();
-			this.lastName = client.getLastName();
-			this.email = client.getEmail();
-			this.accountList=getAccountList();
-		}
+	public ClientDTO(Client client) {
+		this.id = client.getId();
+		this.firstName = client.getFirstName();
+		this.lastName = client.getLastName();
+		this.email = client.getEmail();
+		this.accountList=getAccountList();
+	}
 
-		public long getId() {
+	public long getId() {
 			return id;
 		}
-
-		public String getFirstName() {
+	public String getFirstName() {
 			return firstName;
 		}
-
-		public String getLastName() {
+	public String getLastName() {
 			return lastName;
 		}
-
-		public String getEmail() {
+	public String getEmail() {
 			return email;
 		}
-
-		public Set<AccountDTO> getAccountList() {
+	public Set<AccountDTO> getAccountList() {
 			return accountList;
 		}
-	}
+}

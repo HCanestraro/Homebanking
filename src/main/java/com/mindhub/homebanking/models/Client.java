@@ -1,12 +1,10 @@
 package com.mindhub.homebanking.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+//import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
-
 
 @Entity
 public class Client {
@@ -23,12 +21,9 @@ public class Client {
 	Set<Account> accounts = new HashSet<>();
 
 	public Client() {
-	//	this.firstName = "";
-	//	this.lastName = "";
-	//	this.email = "";
 	}
 
-	public Client(Long id, String firstName, String lastName, String email) {
+	public Client( String firstName, String lastName, String email) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
@@ -67,5 +62,11 @@ public class Client {
 	}
 
 	public Set<Account> getAccounts() { return accounts; }
-
+	public void setAccounts(Set<Account> accounts) {
+		this.accounts = accounts;
+	}
+	public void addAccount(Account account){
+		account.setClient(this);
+		accounts.add(account);
+	}
 }
