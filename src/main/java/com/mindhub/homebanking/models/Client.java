@@ -1,26 +1,37 @@
 package com.mindhub.homebanking.models;
 
+import com.mindhub.homebanking.models.Account;
+import com.mindhub.homebanking.repositories.ClientRepository;
+import com.mindhub.homebanking.dtos.AccountDTO;
+import com.mindhub.homebanking.dtos.ClientDTO;
 import javax.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.data.annotation.Id;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-//import com.fasterxml.jackson.annotation.JsonProperty;
-//import java.util.HashSet;
-//import java.util.Set;
+import org.springframework.data.annotation.Id;
+import javax.persistence.OneToMany;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Client {
-	@javax.persistence.Id
+
+	//@javax.persistence.Id
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
 	@GenericGenerator(name = "native", strategy = "native")
-	private Long id;
+	private long id;
 	private String firstName;
 	private String lastName;
 	private String email;
 
+	@OneToMany(mappedBy="owner", fetch=FetchType.EAGER)
+	Set<Account> accounts = new HashSet<>();
+//	@OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
+//	Set<Account> accounts = new HashSet<>();
 
 	public Client() {
 		this.firstName = "";
@@ -65,6 +76,8 @@ public class Client {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	public Set<Account> getAccounts() { return accounts; }
 
 }
 
