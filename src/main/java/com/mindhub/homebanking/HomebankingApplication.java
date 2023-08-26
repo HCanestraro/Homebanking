@@ -1,9 +1,10 @@
 package com.mindhub.homebanking;
 
-import com.mindhub.homebanking.models.Client;
-import com.mindhub.homebanking.models.Account;
-import com.mindhub.homebanking.repositories.AccountRepository;
-import com.mindhub.homebanking.repositories.ClientRepository;
+import com.mindhub.homebanking.models.*;
+import static com.mindhub.homebanking.models.TransactionType.*;
+//import com.mindhub.homebanking.models.Account;
+import com.mindhub.homebanking.repositories.*;
+//import com.mindhub.homebanking.repositories.ClientRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,40 +21,47 @@ public class HomebankingApplication {
 	@Bean
 	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository){
 		return (args -> {
-			Client client1 = new Client();
-			client1.setFirstName("Javier");
-			client1.setLastName("Miller");
-			client1.setEmail("miller@mail.com");
+			Client client = (new Client("Melba","Morel","melba@mindhub.com");
+			repository.save(client);
+			Account account1 = new Account("VIN001", LocalDate.now(), 5000, client);
+			accountRepository.save(account1);
+			client.addAccount(account1);
 
-			Client client2 = new Client();
-			client2.setFirstName("Melba");
-			client2.setLastName("Moler");
-			client2.setEmail("melbar@minhub.com");
+			Client client = (new Client("Melba","Morel","melba@mindhub.com");
+			repository.save(client);
+			Account account1 = new Account("VIN001", LocalDate.now(), 5000, client);
+			accountRepository.save(account1);
+			client.addAccount(account1);
 
 			clientRepository.save(client1);
 			clientRepository.save(client2);
 
-			Account account1 = new Account();
-			account1.setNumber("VIN001");
-			account1.setCreationDate(LocalDate.now());
-			account1.setBalance(5000.0);
-			account1.setClient(client2);
 
-			Account account2 = new Account();
-			account2.setNumber("VIN002");
-			account2.setCreationDate( LocalDate.now().plusDays(1));
-			account2.setBalance(7500.0);
-			account2.setClient(client2);
+			Account account2 = new Account("VIN002",LocalDate.now().plusDays(1),7500,client);
+			accountRepository.save(account2);
+			client.addAccount(account2);
+			Transaction transaction = new Transaction(EXTRACTION, 1000.00, "extraction", LocalDate.now());
 
-			Account account3 = new Account();
+			transaction.setAccount(account1);
+			account1.addTransaction(transaction);
+			accountRepository.save(account1);
+			transactionRepository.save(transaction);
+
+			Transaction transaction1 =new Transaction(DEPOSIT, 5000, "deposit", LocalDate.now());
+			transaction1.setAccount(account1);
+			account1.addTransaction(transaction1);
+			accountRepository.save(account1);
+			transactionRepository.save(transaction1);
+
+			/*Account account3 = new Account();
 			account3.setNumber("VIN003");
 			account3.setCreationDate( LocalDate.now().plusDays(5));
 			account3.setBalance(75000.0);
-			account3.setClient(client1);
+			account3.setClient(client1);*/
 
-			accountRepository.save(account1);
-			accountRepository.save(account2);
-			accountRepository.save(account3);
+
+
+			//accountRepository.save(account3);
 		});
 		}
 	}

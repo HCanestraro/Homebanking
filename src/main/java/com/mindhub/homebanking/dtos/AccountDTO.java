@@ -4,8 +4,6 @@ import com.mindhub.homebanking.models.Account;
 import com.mindhub.homebanking.models.Client;
 import java.time.LocalDate;
 import java.util.Set;
-//import com.mindhub.homebanking.Models.Transaction;
-
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -16,7 +14,6 @@ import java.util.Set;
 
 		private LocalDate creationDate;
 		private double balance;
-		//private Set<Transaction> transactions;
 		public AccountDTO() {
 		}
 
@@ -25,46 +22,27 @@ import java.util.Set;
 			this.number = account.getNumber();
 			this.creationDate = account.getDate();
 			this.balance = account.getBalance();
-		//	this.transactions=account.getTransactions();
 		}
 
-		public LocalDate getCreationDate() {
-			return creationDate;
-		}
+		//public LocalDate getCreationDate() {			return creationDate;		}
 
 		//public Set<Transaction> getTransactions() {			return transactions;		}
 
 		//public void setTransactions(Set<Transaction> transactions) {			this.transactions = transactions;		}
 
-		public long getId() {
-			return id;
-		}
+		//public long getId() {			return id;		}
 
-		public void setId(long id) {
-			this.id = id;
-		}
+		//public void setId(long id) {			this.id = id;		}
 
-		public String getNumber() {
-			return number;
-		}
+		//public String getNumber() {			return number;		}
 
-		public void setNumber(String number) {
-			this.number = number;
-		}
+		//public void setNumber(String number) {			this.number = number;		}
 
-		public LocalDate getDate() {
-			return creationDate;
-		}
+		//public LocalDate getDate() {			return creationDate;		}
 
-		public void setCreationDate(LocalDate creationDate) {
-			this.creationDate = creationDate;
-		}
+		//public void setCreationDate(LocalDate creationDate) {			this.creationDate = creationDate;		}
 
-		public double getBalance() {
-			return balance;
-		}
+		//public double getBalance() {			return balance;		}
 
-		public void setBalance(double balance) {
-			this.balance = balance;
-		}
+		//public void setBalance(double balance) {			this.balance = balance;		}
 	}
