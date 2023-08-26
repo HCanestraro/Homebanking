@@ -1,9 +1,9 @@
 package com.mindhub.homebanking;
 
 import com.mindhub.homebanking.models.Account;
-import static com.mindhub.homebanking.models.TransactionType.*;
 import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.models.Transaction;
+import com.mindhub.homebanking.models.TransactionType;
 import com.mindhub.homebanking.repositories.AccountRepository;
 import com.mindhub.homebanking.repositories.ClientRepository;
 import com.mindhub.homebanking.repositories.TransactionRepository;
@@ -11,7 +11,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @SpringBootApplication
 public class HomebankingApplication {
@@ -21,43 +23,52 @@ public class HomebankingApplication {
 	}
 
 	@Bean
-	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository){
-		return (args -> {
-			Client client = new Client("Melba","Morel","melba@mindhub.com");
-			clientRepository.save(client);
-			Account account1 = new Account("VIN001", LocalDate.now(), 5000, client);
+	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository) {
+		return (args) -> {
+			Client client1 = new Client("Melba", "Morel", "melba@mindhub.com");
+			Client client2 = new Client("Tony", "Stark", "stark@mindhub.com");
+
+			clientRepository.save(client1);
+			clientRepository.save(client2);
+
+			Account account1 = new Account("VIN001", LocalDate.now(), 5000.00);
+			Account account2 = new Account("VIN002", LocalDate.now().plusDays(1), 7500.00);
+			Account account3 = new Account("VIN003", LocalDate.now().minusYears(3), 70500.00);
+
+			client1.addAccount(account1);
+			client1.addAccount(account2);
+			client2.addAccount(account3);
+
 			accountRepository.save(account1);
-			client.addAccount(account1);
-
-			/*clientRepository.save(client1);
-			clientRepository.save(client2);*/
-
-
-			Account account2 = new Account("VIN002",LocalDate.now().plusDays(1),7500,client);
 			accountRepository.save(account2);
-			client.addAccount(account2);
-			Transaction transaction = new Transaction(EXTRACTION, 1000.00, "extraction", LocalDate.now());
+			accountRepository.save(account3);
 
-			transaction.setAccount(account1);
-			account1.addTransaction(transaction);
-			accountRepository.save(account1);
-			transactionRepository.save(transaction);
+			Transaction tran1 = new Transaction(TransactionType.CREDIT, 1300.00, "cine", LocalDateTime.now());
+			Transaction tran2 = new Transaction(TransactionType.CREDIT, 2500.00, "hamburguesa", LocalDateTime.now().plusDays(1));
+			Transaction tran3 = new Transaction(TransactionType.DEBIT, -1400.00, "cafe", LocalDateTime.now().plusDays(2));
+			Transaction tran4 = new Transaction(TransactionType.DEBIT, -8700.00, "cena", LocalDateTime.now().plusDays(3));
+			Transaction tran5 = new Transaction(TransactionType.DEBIT, -1400.00, "cafe", LocalDateTime.now().plusDays(2));
+			Transaction tran6 = new Transaction(TransactionType.DEBIT, -8700.00, "cena", LocalDateTime.now().plusDays(3));
 
-			Transaction transaction1 =new Transaction(DEPOSIT, 5000, "deposit", LocalDate.now());
-			transaction1.setAccount(account1);
-			account1.addTransaction(transaction1);
-			accountRepository.save(account1);
-			transactionRepository.save(transaction1);
+			account1.addTransaction(tran1);
+			account1.addTransaction(tran4);
 
-			/*Account account3 = new Account();
-			account3.setNumber("VIN003");
-			account3.setCreationDate( LocalDate.now().plusDays(5));
-			account3.setBalance(75000.0);
-			account3.setClient(client1);*/
+			account2.addTransaction(tran2);
+			account2.addTransaction(tran3);
+
+			account3.addTransaction(tran5);
+			account3.addTransaction(tran6);
+
+			transactionRepository.save(tran1);
+			transactionRepository.save(tran2);
+			transactionRepository.save(tran3);
+			transactionRepository.save(tran4);
+			transactionRepository.save(tran5);
+			transactionRepository.save(tran6);
 
 
 
-			//accountRepository.save(account3);
-		});
-		}
+		};
 	}
+
+}

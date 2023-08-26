@@ -1,42 +1,42 @@
 package com.mindhub.homebanking.models;
 
-//import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
+
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 public class Client {
+
+	//Atributos o propiedades
 	@Id
+	@GenericGenerator(name= "native", strategy = "native")
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-	@GenericGenerator(name = "native", strategy = "native")
-	private long id;
+	private Long id;
 	private String firstName;
 	private String lastName;
 	private String email;
 
-//	@OneToMany(mappedBy="owner", fetch=FetchType.EAGER)
 	@OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
-	Set<Account> accounts = new HashSet<>();
+	private Set<Account> accounts = new HashSet<>();
 
-	public Client() {
-	}
+	//Constructores
+	public Client() { }
 
-	public Client( String firstName, String lastName, String email) {
+	public Client(String firstName, String lastName, String email) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 	}
 
+	//metodos
 	public Long getId() {
 		return id;
 	}
-
 	public void setId(Long id) {
 		this.id = id;
 	}
-
 	public String getFirstName() {
 		return firstName;
 	}
@@ -61,12 +61,11 @@ public class Client {
 		this.email = email;
 	}
 
-	public Set<Account> getAccounts() { return accounts; }
-	public void setAccounts(Set<Account> accounts) {
-		this.accounts = accounts;
+	public Set<Account> getAccounts(){
+		return accounts;
 	}
 	public void addAccount(Account account){
 		account.setClient(this);
-		accounts.add(account);
+		this.accounts.add(account);
 	}
 }
