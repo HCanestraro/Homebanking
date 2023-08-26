@@ -7,7 +7,6 @@ import java.util.Set;
 
 @Entity
 public class Client {
-	//Atributos o propiedades
 	@Id
 	@GenericGenerator(name= "native", strategy = "native")
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
@@ -17,7 +16,6 @@ public class Client {
 	private String email;
 	@OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
 	private Set<Account> accounts = new HashSet<>();
-	//Constructores
 	public Client() { }
 
 	public Client(String firstName, String lastName, String email) {
@@ -26,7 +24,6 @@ public class Client {
 		this.email = email;
 	}
 
-	//metodos
 	public Long getId() {
 		return id;
 	}
