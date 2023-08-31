@@ -22,7 +22,6 @@ public class Card {
 		private Client client;
 
 		public Card() {
-
 		}
 
 		public Card(String cardHolder, CardType type, CardColor color, String number, int cvv, LocalDate fromDate, LocalDate thruDate) {
