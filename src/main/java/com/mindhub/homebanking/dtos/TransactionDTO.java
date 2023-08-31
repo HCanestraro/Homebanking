@@ -3,35 +3,42 @@ package com.mindhub.homebanking.dtos;
 import com.mindhub.homebanking.models.Transaction;
 import com.mindhub.homebanking.models.TransactionType;
 import java.time.LocalDateTime;
-
+import com.mindhub.homebanking.models.Account;
+import com.mindhub.homebanking.models.Transaction;
+import com.mindhub.homebanking.models.TransactionType;
+import java.time.LocalDate;
 public class TransactionDTO {
-    private Long id;
-    private TransactionType type;
-    private Double amount;
-    private String description;
-    private LocalDateTime date;
 
-    public TransactionDTO(Transaction transaction){
-        id = transaction.getId();
-        type = transaction.getType();
-        amount = transaction.getAmount();
-        description = transaction.getDescription();
-        date = transaction.getDate();
-    }
+        private Long id;
+        private TransactionType type;
+        private double amount;
+        private String description;
+        private LocalDate date;
+        private Account account;
 
-    public Long getId() {
-        return id;
+        public TransactionDTO(Transaction transaction) {
+            this.type = transaction.getType();
+            this.amount = transaction.getAmount();
+            this.description = transaction.getDescription();
+            this.date = transaction.getDate();
+        }
+
+        public Long getId() {
+            return id;
+        }
+        public TransactionType getType() {
+            return type;
+        }
+        public double getAmount() {
+            return amount;
+        }
+        public String getDescription() {
+            return description;
+        }
+        public LocalDate getDate() {
+            return date;
+        }
+        public Account getAccount() {
+            return account;
+        }
     }
-    public TransactionType getType() {
-        return type;
-    }
-    public Double getAmount() {
-        return amount;
-    }
-    public String getDescription() {
-        return description;
-    }
-    public LocalDateTime getDate() {
-        return date;
-    }
-}
