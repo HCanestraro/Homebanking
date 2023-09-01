@@ -10,6 +10,6 @@ import java.util.Set;
 @RepositoryRestResource
 public interface ClientRepository extends JpaRepository<Client, Long> {
 	Client findByEmail (String email);
-	Client findByCards (Set<Card> cards);
+	//Client findByCards (Set<Card> cards);
 
 }
