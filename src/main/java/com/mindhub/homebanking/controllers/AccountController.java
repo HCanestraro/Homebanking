@@ -35,9 +35,7 @@ public class AccountController {
 
     @RequestMapping("/api/accounts/{id}")
     public AccountDTO getAccount(@PathVariable Long id) {
-
         return accountRepository.findById(id).map(AccountDTO::new).orElse(null);
-
     }
 
     @RequestMapping(value = "/api/clients/current/accounts", method = RequestMethod.POST)
@@ -62,11 +60,9 @@ public class AccountController {
     @RequestMapping(value = "/api/clients/current/accounts")
     public List<AccountDTO> getCurrentUserAccounts(Authentication authentication) {
         Client currentClient = clientRepository.findByEmail(authentication.getName()).orElse(null);
-
         if (currentClient != null) {
             return currentClient.getAccounts().stream().map(AccountDTO::new).collect(toList());
         }
-
         return null;
     }
 

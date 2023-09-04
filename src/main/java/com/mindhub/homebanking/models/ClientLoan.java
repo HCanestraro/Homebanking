@@ -2,19 +2,18 @@ package com.mindhub.homebanking.models;
 
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+
 @Entity
 public class ClientLoan {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
 	@GenericGenerator(name = "native", strategy = "native")
 	private long id;
-	private double amount;
+	private Double amount;
 	private int payments;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "client_id")
+	@JoinColumn(name = "clientLoan_id")
 	private Client client;
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "loan_id")
@@ -23,11 +22,9 @@ public class ClientLoan {
     public ClientLoan() {
     }
 
-	public ClientLoan(double amount, int payments, Client client, Loan loan) {
+	public ClientLoan(double amount, int payments) {
 		this.amount = amount;
 		this.payments = payments;
-		this.client = client;
-		this.loan = loan;
 	}
 
 	public long getId() {

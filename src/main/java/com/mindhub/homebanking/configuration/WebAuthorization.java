@@ -26,13 +26,13 @@ public class WebAuthorization {
 				.antMatchers(HttpMethod.GET,"/h2-console").hasAuthority("ADMIN")
 				.antMatchers(HttpMethod.GET, "/api/account").hasAuthority("ADMIN")
 				.antMatchers(HttpMethod.GET,"/api/admin/**").hasAuthority("ADMIN")
-				.antMatchers("/web/css/**").permitAll()
-				.antMatchers("/web/js/**").permitAll()
-				.antMatchers("/web/img/**").permitAll()
-				.antMatchers("/web/**").hasAuthority("CLIENT")
+				.antMatchers(HttpMethod.GET,"/web/css/**").permitAll()
+				.antMatchers(HttpMethod.GET,"/web/js/**").permitAll()
+				.antMatchers(HttpMethod.GET,"/web/img/**").permitAll()
+				.antMatchers(HttpMethod.GET,"/web/**").hasAuthority("CLIENT")
 				.antMatchers(HttpMethod.POST, "/api/clients").permitAll()
 				.antMatchers(HttpMethod.GET, "/api/clients").hasAuthority("ADMIN")
-				.antMatchers("/api/clients/current/cards").hasAuthority("CLIENT")
+				.antMatchers(HttpMethod.GET,"/api/clients/current/cards").hasAuthority("CLIENT")
 				.antMatchers(HttpMethod.GET, "/rest/**").hasAuthority("ADMIN");
 
 		/*
