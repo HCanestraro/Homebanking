@@ -23,7 +23,6 @@ public class AccountDTO {
         this.date = account.getDate();
         this.balance = account.getBalance();
         this.transactions = account.getTransactions();
-        //.stream().map(transaction -> new TransactionDTO(transaction)).collect(Collectors.toSet());
     }
 
     public Long getId() {
