@@ -10,17 +10,17 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class AccountDTO {
-    private Long id;
-    private String number;
-    private LocalDate date;
-    private double balance;
+    private final Long id;
+    private final String number;
+    private final LocalDate creationDate;
+    private final double balance;
     private Set<Transaction> transactions = new HashSet<>();
     private Client owner;
 
     public AccountDTO(Account account) {
         this.id = account.getId();
         this.number = account.getNumber();
-        this.date = account.getDate();
+        this.creationDate = account.getDate();
         this.balance = account.getBalance();
         this.transactions = account.getTransactions();
     }
@@ -32,7 +32,7 @@ public class AccountDTO {
         return number;
     }
     public LocalDate getDate() {
-        return date;
+        return creationDate;
     }
     public double getBalance() {
         return balance;

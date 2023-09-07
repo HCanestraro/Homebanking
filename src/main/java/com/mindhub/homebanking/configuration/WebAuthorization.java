@@ -3,10 +3,8 @@ package com.mindhub.homebanking.configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.authentication.configuration.GlobalAuthenticationConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
@@ -20,21 +18,16 @@ public class WebAuthorization {
 	@Bean
 	protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests()
-				.antMatchers(HttpMethod.GET,"/web/index.html").permitAll()
-				.antMatchers(HttpMethod.GET,"/api/clients/current/**").hasAuthority( "ADMIN")
-				.antMatchers(HttpMethod.GET,"/api/clients/current/**").hasAuthority( "CLIENT")
+				.antMatchers(HttpMethod.GET, "/rest/**").hasAuthority("ADMIN")
 				.antMatchers(HttpMethod.GET,"/h2-console").hasAuthority("ADMIN")
-				.antMatchers(HttpMethod.GET, "/api/account").hasAuthority("ADMIN")
-				.antMatchers(HttpMethod.GET,"/api/admin/**").hasAuthority("ADMIN")
-				.antMatchers(HttpMethod.GET,"/web/css/**").permitAll()
-				.antMatchers(HttpMethod.GET,"/web/js/**").permitAll()
-				.antMatchers(HttpMethod.GET,"/web/img/**").permitAll()
-				.antMatchers(HttpMethod.GET,"/web/**").hasAuthority("CLIENT")
-				.antMatchers(HttpMethod.POST, "/api/clients").permitAll()
+				.antMatchers("/web/css/**").permitAll()
+				.antMatchers("/web/js/**").permitAll()
+				.antMatchers("/web/img/**").permitAll()
+				.antMatchers(HttpMethod.GET,"/web/index.html").permitAll()
 				.antMatchers(HttpMethod.GET, "/api/clients").hasAuthority("ADMIN")
-				.antMatchers(HttpMethod.GET,"/api/clients/current/cards").hasAuthority("CLIENT")
-				.antMatchers(HttpMethod.GET, "/rest/**").hasAuthority("ADMIN");
-
+				.antMatchers(HttpMethod.GET,"/api/clients/current").hasAuthority( "CLIENT")
+				.antMatchers(HttpMethod.POST, "/api/transactions").hasAuthority("CLIENT");
+		
 		/*
 
 		 */
@@ -42,7 +35,6 @@ public class WebAuthorization {
 				.usernameParameter("email")
 				.passwordParameter("password")
 				.loginPage("/api/login");
-
 
 		http.logout().logoutUrl("/api/logout");
 		http.csrf().disable();

@@ -7,14 +7,14 @@ import com.mindhub.homebanking.models.Client;
 import java.time.LocalDate;
 
 public class CardDTO{
-	private long id;
-	private String cardHolder;
-	private CardType type;
-	private CardColor color;
-	private String number;
-	private int cvv;
-	private LocalDate fromDate;
-	private LocalDate thruDate;
+	private final long id;
+	private final String cardHolder;
+	private final CardType type;
+	private final CardColor color;
+	private final String number;
+	private final int cvv;
+	private final LocalDate fromDate;
+	private final LocalDate thruDate;
 
 	public CardDTO(Card card) {
 		this.id = card.getId();

@@ -6,10 +6,10 @@ import java.util.stream.Collectors;
 import java.util.HashSet;
 
 public class ClientDTO {
-    private Long id;
-    private String email;
-    private String firstName;
-    private String lastName;
+    private final Long id;
+    private final String email;
+    private final String firstName;
+    private final String lastName;
     private Set<AccountDTO> accounts = new HashSet<>();
     private Set<ClientLoanDTO> loans = new HashSet<>();
     private Set<CardDTO> cards = new HashSet<>();
