@@ -17,8 +17,10 @@ public class Loan {
 	
 	@ElementCollection
 	private List<Integer> payments= new ArrayList<>();
-	@OneToMany(mappedBy = "loan", fetch=FetchType.EAGER)
-	private Set<ClientLoan> clientLoans;
+	//@OneToMany(mappedBy = "loan", fetch=FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "account_id")
+	private Account accounts;
 	public Loan() {
 	}
 	
@@ -69,4 +71,6 @@ public class Loan {
 		clientLoan.setLoan(this);
 		clientLoans.add(clientLoan);
 	}
+	public Account getAccounts() { return accounts; }
+	public void setAccounts(Account accounts) { this.accounts = accounts; }
 }

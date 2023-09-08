@@ -6,6 +6,9 @@ import com.mindhub.homebanking.models.Transaction;
 import com.mindhub.homebanking.models.TransactionType;
 import com.mindhub.homebanking.repositories.AccountRepository;
 import com.mindhub.homebanking.repositories.TransactionRepository;
+import com.mindhub.homebanking.services.AccountService;
+import com.mindhub.homebanking.services.ClientService;
+import com.mindhub.homebanking.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,16 +22,19 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @RestController
 @RequestMapping("/api")
 public class TransactionController {
 	@Autowired
-	private AccountRepository accountRepository;
+	private AccountRepository accountService;
 	@Autowired
-	private TransactionRepository transactionRepository;
+	private ClientService clientService;
+	@Autowired
+	private TransactionService transactionService;
 	@RequestMapping("/transactions")
 	public List<TransactionDTO> getTransaction(){
-		return  transactionRepository.findAll().stream().map(transaction -> new TransactionDTO(transaction)).collect(Collectors.toList());
+		return  transactionService.findAll();
 	}
 	@Transactional
 	@RequestMapping(path = "/transactions", method = RequestMethod.POST)
@@ -40,17 +46,17 @@ public class TransactionController {
 		if(fromAccountNumber.isEmpty() || toAccountNumber.isEmpty() || amount==null || description.isEmpty()){
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
-		if(fromAccountNumber.equals(toAccountNumber)){
+		if(fromAccountNumber.equals(toAccountNumber)) {
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
-		Account accountTransaction = accountRepository.findByNumber(fromAccountNumber);
+		Account accountTransaction = accountService.findByNumber(fromAccountNumber);
 		if(accountTransaction==null){
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
 		if(!accountTransaction.getClient().getEmail().equals(authentication.getName())){
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
-		Account accountTo =accountRepository.findByNumber(toAccountNumber);
+		Account accountTo =accountService.findByNumber(toAccountNumber);
 		if(accountTo==null){
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
@@ -61,8 +67,8 @@ public class TransactionController {
 		Transaction creditTransfer =new Transaction(TransactionType.CREDIT, amount, description, LocalDate.now(), accountTo);
 		accountTransaction.setBalance(accountTransaction.getBalance()-amount);
 		accountTo.setBalance(accountTo.getBalance()+amount);
-		transactionRepository.save(debitTransfer);
-		transactionRepository.save(creditTransfer);
+		transactionService.save(debitTransfer);
+		transactionService.save(creditTransfer);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 } 
