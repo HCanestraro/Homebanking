@@ -32,12 +32,9 @@ public class CardController {
 	private CardService cardService;
 	@Autowired
 	private ClientService clientService;
-	
 	@RequestMapping("/clients/current/cards")
 	public List<CardDTO> findCard(Authentication authentication) {
-		
 		return cardService.findByClient(clientService.findByEmail(authentication.getName())).stream().map(CardDTO::new).collect(toList());
-		
 	}
 	
 	@RequestMapping(path = "/clients/current/cards", method = RequestMethod.POST)
@@ -50,30 +47,25 @@ public class CardController {
 		
 		int contC=0;
 		int contD=0;
-		for(int i=0; i<cardsByClient.size(); i++){
-			if(cardsByClient.get(i).getType().equals(CREDIT)){
+		for(int i=0; i<cardsByClient.size(); i++) {
+			if(cardsByClient.get(i).getType().equals(CREDIT)) {
 				contC++;
-				
 			}
-			if(cardsByClient.get(i).getType().equals(DEBIT)){
+			if(cardsByClient.get(i).getType().equals(DEBIT)) {
 				contD++;
 			}
 		}
 		if (cardsByClient.size() < 7) {
-			
 			if (contD<3&&cardType.equals(DEBIT)) {
 				Card card = new Card(client, name, DEBIT, cardColor, number, cvv, LocalDate.now().plusYears(5), LocalDate.now());
 				cardService.save(card);
 				return new ResponseEntity<>(HttpStatus.CREATED);
-				
 			}
-			
 			if (cardType.equals(CREDIT) && contC < 3) {
 				Card card = new Card(client, name, CREDIT, cardColor, number, cvv, LocalDate.now().plusYears(5), LocalDate.now());
 				cardService.save(card);
 				return new ResponseEntity<>(HttpStatus.CREATED);
 			}
-			
 		} else {
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}

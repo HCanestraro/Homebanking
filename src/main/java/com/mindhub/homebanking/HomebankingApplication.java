@@ -49,9 +49,7 @@ public class HomebankingApplication {
 			Transaction transaction = new Transaction(TransactionType.DEBIT, 1000.00, "extraction", LocalDate.now(), account1);
 			transactionRepository.save(transaction);
 			Transaction transaction1 = new Transaction(TransactionType.CREDIT, 5000, "deposit", LocalDate.now(), account1);
-			//List<Transaction> transactionsS = new ArrayList<>();
-			//transactionsS.add(transaction);
-			//transactionsS.add(transaction1);
+
 			account1.addTransaction(transaction);
 			account1.addTransaction(transaction1);
 			accountRepository.save(account1);

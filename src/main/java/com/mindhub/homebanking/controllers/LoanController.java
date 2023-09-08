@@ -21,30 +21,21 @@ public class LoanController {
 	private ClientLoanService clientLoanService;
 	@Autowired
 	private ClientService clientService;
-	
 	@Autowired
 	private LoanService loanService;
-	
 	@Autowired
 	private AccountRepository accountService;
 	@Autowired
 	private TransactionService transactionService;
-	
 	@GetMapping("/loans")
 	public List<LoanDTO> getLoans() {
 		return loanService.findAll().stream().map(loanName -> new LoanDTO(loanName)).collect(Collectors.toList());
-		//return clientLoanRepository.findByClient(clientRepository.findByEmail(authentication.getName())).stream().map(clientLoan -> new ApplicationDTO(clientLoan)).collect(Collectors.toList());
 	}
-	
-	
 	@RequestMapping(path = "/loans", method = RequestMethod.POST)
 	public ResponseEntity<Object> createLoan(@RequestBody LoanApplicationDTO loanApplicationDTO, Authentication authentication) {
-		
 		if (loanApplicationDTO == null) {
-			
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
-		
 		Loan newLoan = loanService.findById(loanApplicationDTO.getLoanId()).orElse(null);
 		if (newLoan == null) {
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -53,8 +44,6 @@ public class LoanController {
 		if (!account.getClient().equals(clientService.findByEmail(authentication.getName()))) {
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
-		
-		
 		if (account == null) {
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
@@ -75,5 +64,4 @@ public class LoanController {
 		transactionService.save(transaction);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
-	
 }

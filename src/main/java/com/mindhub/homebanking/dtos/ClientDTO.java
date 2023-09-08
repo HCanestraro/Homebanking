@@ -30,12 +30,12 @@ public class ClientDTO {
     public long getId() {
         return id;
     }
-    public String getFirstName() {
-        return firstName;
-    }
-    public String getLastName() {
-        return lastName;
-    }
+//    public String getFirstName() {
+//        return firstName;
+//    }
+//    public String getLastName() {
+//        return lastName;
+//    }
     public String getEmail() {
         return email;
     }
@@ -54,10 +54,10 @@ public class ClientDTO {
     public void setCards(Set<CardDTO> cards) {
         this.cards = cards;
     }
-    public String getPassword() {
-        return password;
-    }
-    public void setPassword(String password) {
-        this.password = password;
-    }
+//    public String getPassword() {
+//        return password;
+//    }
+//    public void setPassword(String password) {
+//        this.password = password;
+//    }
 }

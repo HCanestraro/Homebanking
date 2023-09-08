@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 @Configuration
 public class WebAuthentication extends GlobalAuthenticationConfigurerAdapter {
 	@Bean
@@ -21,7 +20,6 @@ public class WebAuthentication extends GlobalAuthenticationConfigurerAdapter {
 	}
 	@Autowired
 	ClientRepository clientRepository;
-
 	@Override
 	public void init(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(email-> {
