@@ -22,6 +22,7 @@ import java.util.concurrent.CancellationException;
 import static com.mindhub.homebanking.models.CardType.CREDIT;
 import static com.mindhub.homebanking.models.CardType.DEBIT;
 import static java.util.stream.Collectors.toList;
+
 @RestController
 @RequestMapping("/api")
 public class CardController {

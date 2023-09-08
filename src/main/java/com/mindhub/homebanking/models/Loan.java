@@ -13,7 +13,6 @@ public class Loan {
 	private long id;
 	private String name;
 	private double maxAmount;
-	
 	private double amount;
 	
 	@ElementCollection

@@ -70,14 +70,12 @@ public class HomebankingApplication {
 			clientLoanRepository.save(clientloan1);
 			clientRepository.save(client);
 			
-			
 			ClientLoan clientloan2 = new ClientLoan(50000, 12);
 			clientloan2.setLoan(loan2);
 			clientloan2.getLoan().setName(loan2.getName());
 			clientloan2.setClient(client);
 			clientLoanRepository.save(clientloan2);
 			clientRepository.save(client);
-			
 			
 			ClientLoan clientloan3 = new ClientLoan(100000, 6);
 			clientloan3.setLoan(loan2);

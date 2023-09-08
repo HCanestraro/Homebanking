@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Configuration
-public class WebAuthorization{
+public class WebAuthorization {
 	@Bean
 	protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests()

@@ -4,7 +4,6 @@ import com.mindhub.homebanking.models.Client;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-
 public class ClientDTO {
     private long id;
     private String firstName;
@@ -28,42 +27,33 @@ public class ClientDTO {
         this.cards=client.getCards().stream().map(card ->new CardDTO(card)).collect(Collectors.toSet());
         this.password=client.getPassword();
     }
-    
     public long getId() {
         return id;
     }
-    
     public String getFirstName() {
         return firstName;
     }
-    
     public String getLastName() {
         return lastName;
     }
-    
     public String getEmail() {
         return email;
     }
     public Set<AccountDTO> getAccounts() {
         return accounts;
     }
-    
     public Set<ClientLoanDTO> getLoans() {
         return loans;
     }
-    
     public void setLoans(Set<ClientLoanDTO> loans) {
         this.loans = loans;
     }
-    
     public Set<CardDTO> getCards() {
         return cards;
     }
-    
     public void setCards(Set<CardDTO> cards) {
         this.cards = cards;
     }
-    
     public String getPassword() {
         return password;
     }
