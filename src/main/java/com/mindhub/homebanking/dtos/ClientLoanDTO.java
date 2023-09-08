@@ -22,48 +22,37 @@ public class ClientLoanDTO {
     public long getId() {
         return id;
     }
-    
-    public void setId(long id) {
+	public void setId(long id) {
         this.id = id;
     }
-    
-    public long getId_loan() {
+	public long getId_loan() {
         return id_loan;
     }
-    
-    public void setId_loan(long id_loan) {
+	public void setId_loan(long id_loan) {
         this.id_loan = id_loan;
     }
-    
-    public long getId_client() {
+	public long getId_client() {
         return id_client;
     }
-    
-    public void setId_client(long id_client) {
+	public void setId_client(long id_client) {
         this.id_client = id_client;
     }
-    
-    public String getName() {
+	public String getName() {
         return name;
     }
-    
-    public void setName(String name) {
+	public void setName(String name) {
         this.name = name;
     }
-    
-    public double getAmount() {
+	public double getAmount() {
         return amount;
     }
-    
-    public void setAmount(double amount) {
+	public void setAmount(double amount) {
         this.amount = amount;
     }
-    
-    public int getPayments() {
+	public int getPayments() {
         return payments;
     }
-    
-    public void setPayments(int payments) {
+	public void setPayments(int payments) {
         this.payments = payments;
     }
 }

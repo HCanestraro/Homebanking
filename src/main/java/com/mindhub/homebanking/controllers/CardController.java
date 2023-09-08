@@ -14,13 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.time.LocalDate;
 import java.util.Random;
 
 @RestController
 public class CardController {
-	
 	@Autowired
 	private CardService cardService;
 	
@@ -35,5 +33,4 @@ public class CardController {
 			return new ResponseEntity<>(ex.getMessage(), HttpStatus.FORBIDDEN);
 		}
 	}
-	
 } 

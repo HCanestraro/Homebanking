@@ -12,7 +12,6 @@ import java.util.List;
 
 @RestController
 public class ClientController {
-    
     @Autowired
     private ClientService clientService;
     
@@ -21,7 +20,6 @@ public class ClientController {
     public ResponseEntity<Object> register(
             @RequestParam String firstName, @RequestParam String lastName,
             @RequestParam String email, @RequestParam String password) {
-        
         try {
             clientService.register(firstName, lastName, email, password);
             return new ResponseEntity<>(HttpStatus.CREATED);
