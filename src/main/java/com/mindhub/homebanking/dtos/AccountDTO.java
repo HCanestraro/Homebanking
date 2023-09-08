@@ -1,42 +1,56 @@
 package com.mindhub.homebanking.dtos;
 
 import com.mindhub.homebanking.models.Account;
-import com.mindhub.homebanking.models.Client;
-import com.mindhub.homebanking.models.Transaction;
 import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class AccountDTO {
-    private final Long id;
-    private final String number;
-    private final LocalDate creationDate;
-    private final double balance;
-    private Set<Transaction> transactions = new HashSet<>();
-    private Client owner;
-
+    private long id;
+    
+    private String number;
+    
+    private LocalDate creationDate;
+    private double balance;
+    private Set<TransactionDTO> transactions;
+    
+    public AccountDTO() {
+    }
+    
     public AccountDTO(Account account) {
-        this.id = account.getId();
+        this.id=account.getId();
         this.number = account.getNumber();
         this.creationDate = account.getDate();
         this.balance = account.getBalance();
-        this.transactions = account.getTransactions();
+        this.transactions = account.getTransactions().stream().map(transaction -> new TransactionDTO(transaction)).collect(Collectors.toSet());
     }
-
-    public Long getId() {
+    
+    public LocalDate getCreationDate() {
+        return creationDate;
+    }
+    
+    public Set<TransactionDTO> getTransactions() {
+        return transactions;
+    }
+    
+    public long getId() {
         return id;
     }
+    
+    public void setId(long id) {
+        this.id = id;
+    }
+    
     public String getNumber() {
         return number;
     }
+
     public LocalDate getDate() {
         return creationDate;
     }
+   
     public double getBalance() {
         return balance;
-    }
-    public Set<Transaction> getTransactions() {
-        return transactions;
     }
 }

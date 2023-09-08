@@ -2,92 +2,111 @@ package com.mindhub.homebanking;
 
 import com.mindhub.homebanking.models.*;
 import com.mindhub.homebanking.repositories.*;
-import com.mindhub.homebanking.repositories.LoanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
 @SpringBootApplication
 public class HomebankingApplication {
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-
+	
 	public static void main(String[] args) {
 		SpringApplication.run(HomebankingApplication.class, args);
 	}
+	@Autowired
+	PasswordEncoder passwordEncoder;
 	@Bean
-	public CommandLineRunner initData(ClientRepository clientRepository,
-	                                  AccountRepository accountRepository,
-	                                  TransactionRepository transactionRepository,
-	                                  LoanRepository loanRepository,
-	                                  ClientLoanRepository clientLoanRepository,
-	                                  CardRepository cardRepository) {
+	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository, CardRepository cardRepository) {
 		return (args) -> {
-			// ADMIN
-			Client adminClient = new Client("admin@mindhub.com", "admin", "admin", passwordEncoder.encode("admin#001"));
-			// Clientes
-			Client client1 = new Client("melba@mindhub.com", "Melba", "Morel", passwordEncoder.encode("melba#001"));
-			Client client2 = new Client("henryc.denver@gmail.com", "Henry", "Denver", passwordEncoder.encode("henry#001"));
+			Client client = new Client("Melba", "Morel", "melba@mindhub.com", passwordEncoder.encode("melba1212"));
+			clientRepository.save(client);
+			Client client1 = new Client("Henry", "Denver", "henryc.denver@gmail.com", passwordEncoder.encode("henry1212"));
 			clientRepository.save(client1);
-			clientRepository.save(client2);
-			// cuentas
-			Account account1 = new Account("VIN001", LocalDate.now(), 5000);
-			client1.addAccount(account1);
-			Account account2 = new Account("VIN002", LocalDate.now().plusDays(1), 7500);
-			client1.addAccount(account2);
-			Account account3 = new Account("VIN003", LocalDate.now().minusDays(2), 6000);
-			client2.addAccount(account3);
+			Client client3 = new Client("Admin", "Admin", "admin@mindhub.com", passwordEncoder.encode("admin1212"));
+			clientRepository.save(client3);
+			Account account1 = new Account("VIN001", LocalDate.now(), 5000, client);
+			account1.setClient(client);
 			accountRepository.save(account1);
+			client.addAccount(account1);
+			clientRepository.save(client);
+			Account account2 = new Account("VIN002", LocalDate.now().plusDays(1), 7500, client);
+			account2.setClient(client);
 			accountRepository.save(account2);
+			client.addAccount(account2);
+			clientRepository.save(client1);
+			Account account3 = new Account("VIN003", LocalDate.now().plusDays(1), 7500, client1);
+			account3.setClient(client1);
 			accountRepository.save(account3);
-			// transacciones
-			Transaction transaction1 = new Transaction(TransactionType.DEBIT, 1000, "this is only a test part1", LocalDate.now());
-			account1.addTransaction(transaction1);
-			Transaction transaction2 = new Transaction(TransactionType.CREDIT, 500, "this is only a test part2", LocalDate.now());
-			account1.addTransaction(transaction2);
-			Transaction transaction3 = new Transaction(TransactionType.DEBIT, 1000, "this is only a test part1", LocalDate.now());
-			account3.addTransaction(transaction3);
+			
+			clientRepository.save(client1);
+			
+			Transaction transaction = new Transaction(TransactionType.DEBIT, 1000.00, "extraction", LocalDate.now(), account1);
+			transactionRepository.save(transaction);
+			Transaction transaction1 = new Transaction(TransactionType.CREDIT, 5000, "deposit", LocalDate.now(), account1);
+			List<Transaction> transactionsS = new ArrayList<>();
+			transactionsS.add(transaction);
+			transactionsS.add(transaction1);
+			account1.addTransaction(transactionsS);
+			accountRepository.save(account1);
 			transactionRepository.save(transaction1);
-			transactionRepository.save(transaction2);
-			transactionRepository.save(transaction3);
-			Transaction transaction4 = new Transaction(TransactionType.CREDIT, 500, "this is only a test part2", LocalDate.now());
-			account3.addTransaction(transaction4);
-			// loans
-			Loan loan1 = new Loan("Hipotecario", 500000.0, List.of(12, 24, 36, 48, 60));
-			Loan loan2 = new Loan("Personal", 100000.0, List.of(6, 12, 24));
-			Loan loan3 = new Loan("Automotriz", 300000.0, List.of(6, 12, 24, 36));
+			Loan loan1 = new Loan("Hipotecario", 500000, Arrays.asList(6, 12, 24, 36, 48, 60));
 			loanRepository.save(loan1);
+			Loan loan2 = new Loan("Personal", 100000, Arrays.asList(6, 12, 24));
 			loanRepository.save(loan2);
+			Loan loan3 = new Loan("Automotriz", 300000, Arrays.asList(6, 12, 24, 36));
 			loanRepository.save(loan3);
-			// clientloan
-			ClientLoan clientLoan1 = new ClientLoan(60,400000);
-			client1.addLoan(clientLoan1);
-			loan1.addClient(clientLoan1);
-			ClientLoan clientLoan2 = new ClientLoan(12,50000);
-			client1.addLoan(clientLoan2);
-			loan2.addClient(clientLoan2);
-			ClientLoan clientLoan3 = new ClientLoan(24,100000);
-			client2.addLoan(clientLoan3);
-			loan2.addClient(clientLoan3);
-			ClientLoan clientLoan4 = new ClientLoan(36,200000);
-			client2.addLoan(clientLoan4);
-			loan3.addClient(clientLoan4);
-			clientLoanRepository.save(clientLoan1);
-			clientLoanRepository.save(clientLoan2);
-			clientLoanRepository.save(clientLoan3);
-			clientLoanRepository.save(clientLoan4);
-			// card
-			Card card1 = new Card("Melba Morel", CardType.DEBIT, CardColor.GOLD, "3325-6745-7876-4445", 990, LocalDate.now(),LocalDate.now().plusYears(5));
-			client1.addCard(card1);
-			Card card2 = new Card("Melba Morel",CardType.CREDIT,CardColor.TITANIUM,"2234-6745-5525-7888",750,LocalDate.now(),LocalDate.now().plusYears(5));
-			client1.addCard(card2);
+			
+			ClientLoan clientloan1 = new ClientLoan(400000, 60);
+			clientloan1.setLoan(loan1);
+			clientloan1.getLoan().setName(loan1.getName());
+			clientloan1.setClient(client);
+			client.addLoan(clientloan1);
+			clientLoanRepository.save(clientloan1);
+			clientRepository.save(client);
+			
+			
+			ClientLoan clientloan2 = new ClientLoan(50000, 12);
+			clientloan2.setLoan(loan2);
+			clientloan2.getLoan().setName(loan2.getName());
+			clientloan2.setClient(client);
+			clientLoanRepository.save(clientloan2);
+			clientRepository.save(client);
+			
+			
+			ClientLoan clientloan3 = new ClientLoan(100000, 6);
+			clientloan3.setLoan(loan2);
+			clientloan3.getLoan().setName(loan2.getName());
+			clientloan3.setClient(client1);
+			clientLoanRepository.save(clientloan3);
+			clientRepository.save(client1);
+			
+			ClientLoan clientloan4 = new ClientLoan(200000, 24);
+			clientloan4.setLoan(loan3);
+			clientloan4.getLoan().setName(loan3.getName());
+			clientloan4.setClient(client1);
+			clientLoanRepository.save(clientloan4);
+			clientRepository.save(client1);
+			
+			Card card1 = new Card(client, client.getFirstName() + " " + client.getLastName(), CardType.DEBIT, CardColor.GOLD, "123456789", 789, LocalDate.now().plusYears(5), LocalDate.now());
+			
+			card1.setClient(client);
 			cardRepository.save(card1);
+			clientRepository.save(client);
+			
+			Card card2 = new Card(client, client.getFirstName() + " " + client.getLastName(), CardType.CREDIT, CardColor.GOLD, "123456789A", 456, LocalDate.now().plusYears(5), LocalDate.now());
+			card2.setClient(client);
 			cardRepository.save(card2);
+			clientRepository.save(client);
+			Card card3 = new Card(client1, client1.getFirstName() + " " + client1.getLastName(), CardType.CREDIT, CardColor.TITANIUM, "0123456789", 123, LocalDate.now().plusYears(5), LocalDate.now());
+			card3.setClient(client1);
+			cardRepository.save(card3);
+			clientRepository.save(client1);
 		};
 	}
 }

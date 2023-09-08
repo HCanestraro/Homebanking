@@ -1,44 +1,44 @@
 package com.mindhub.homebanking.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import javax.persistence.*;
-import org.hibernate.annotations.GenericGenerator;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import static com.mindhub.homebanking.models.TransactionType.CREDIT;
+import static com.mindhub.homebanking.models.TransactionType.DEBIT;
+
 @Entity
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
-    private Long id;
+    private long id;
     private String number;
-    private LocalDate date;
+    private LocalDate creationDate;
     private double balance;
-
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "client_id")
+    @JoinColumn(name="client_id")
     private Client client;
-
-    @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
-    private Set<Transaction> transactions = new HashSet<>();
-
+    
+    @OneToMany(mappedBy="account", fetch=FetchType.EAGER)
+    private Set<Transaction> transactions;
     public Account() {
     }
-
-    public Account(String number, LocalDate date, double balance) {
+    
+    public Account(String number, LocalDate creationDate, double balance, Client client) {
         this.number = number;
-        this.date = date;
+        this.creationDate = creationDate;
         this.balance = balance;
+        this.client =client;
     }
-
-    public Long getId() { return id; }
+    
+    public long getId() {
+        return id;
+    }
+    public void setId(long id) {
+        this.id = id;
+    }
     public String getNumber() {
         return number;
     }
@@ -46,10 +46,10 @@ public class Account {
         this.number = number;
     }
     public LocalDate getDate() {
-        return date;
+        return creationDate;
     }
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setCreationDate(LocalDate creationDate) {
+        this.creationDate = creationDate;
     }
     public double getBalance() {
         return balance;
@@ -57,22 +57,26 @@ public class Account {
     public void setBalance(double balance) {
         this.balance = balance;
     }
-    @JsonIgnore
-    public Client getOwner() {
+	public Client getClient() {
         return client;
     }
-    public void setOwner(Client client) {
+	public void setClient(Client client) {
         this.client = client;
     }
     public Set<Transaction> getTransactions() {
         return transactions;
     }
-    public void setTransactions(Set<Transaction> transactions) {
+	public void setTransaction(Set<Transaction> transactions) {
         this.transactions = transactions;
     }
-    public void addTransaction(Transaction transaction) {
-		transaction.setAccount(this);
-        this.transactions.add(transaction);
-		this.setBalance(this.getBalance()+transaction.getAmount());
-    }
+	public void addTransaction(List<Transaction> transactions) {
+        for(int i=0; i<transactions.size(); i++) {
+			if (transactions.get(i).getType().equals(DEBIT)) {
+                this.balance -= transactions.get(i).getAmount();
+                
+            } else if (transactions.get(i).getType().equals(CREDIT)) {
+                this.balance += transactions.get(i).getAmount();
+			}
+        }
+	}
 }
