@@ -4,18 +4,22 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.*;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+@EnableWebSecurity
 @Configuration
 public class WebAuthorization {
 	@Bean
-	protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
+	protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests()
 			.antMatchers(HttpMethod.GET, "/web/index" ).permitAll()
+			.antMatchers(HttpMethod.POST, "/api/login", "/api/logout").permitAll()
 			.antMatchers(HttpMethod.GET, "/api/clients/current/**").hasAnyAuthority("ADMIN", "CLIENT")
 			.antMatchers(HttpMethod.POST, "/api/clients/current/**").hasAnyAuthority("ADMIN", "CLIENT")
 			.antMatchers(HttpMethod.GET, "/web/accounts.html").hasAnyAuthority("ADMIN", "CLIENT")
@@ -24,6 +28,7 @@ public class WebAuthorization {
 			.antMatchers(HttpMethod.GET, "/api/admin/**").hasAuthority("ADMIN")
 			.antMatchers(HttpMethod.GET, "/api/accounts").hasAuthority("ADMIN")
 			.antMatchers(HttpMethod.GET, "/rest/**").hasAuthority("ADMIN")
+			.antMatchers(HttpMethod.GET, "/h2-console/**").hasAuthority("ADMIN")
 			.antMatchers((HttpMethod.POST), "/api/transactions").hasAnyAuthority("ADMIN", "CLIENT")
 			.antMatchers((HttpMethod.GET), "/api/transactions").hasAnyAuthority("ADMIN", "CLIENT")
 			.antMatchers((HttpMethod.POST), "/api/loans").hasAnyAuthority("ADMIN", "CLIENT");

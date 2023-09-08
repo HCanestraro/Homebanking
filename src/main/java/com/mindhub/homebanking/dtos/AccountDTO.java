@@ -20,7 +20,7 @@ public class AccountDTO {
         this.number = account.getNumber();
         this.creationDate = account.getDate();
         this.balance = account.getBalance();
-        this.transactions = account.getTransactions().stream().map(transaction -> new TransactionDTO(transaction)).collect(Collectors.toSet());
+        this.transactions = account.getTransactions().stream().map(TransactionDTO::new).collect(Collectors.toSet());
     }
 	public LocalDate getCreationDate() {
         return creationDate;
