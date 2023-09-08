@@ -6,10 +6,10 @@ import java.util.stream.Collectors;
 import java.util.HashSet;
 
 public class ClientDTO {
-    private Long id;
-    private String email;
-    private String firstName;
-    private String lastName;
+    private final Long id;
+    private final String email;
+    private final String firstName;
+    private final String lastName;
     private Set<AccountDTO> accounts = new HashSet<>();
     private Set<ClientLoanDTO> loans = new HashSet<>();
     private Set<CardDTO> cards = new HashSet<>();
@@ -20,9 +20,9 @@ public class ClientDTO {
         this.firstName = client.getFirstName();
         this.lastName = client.getLastName();
 
-        this.accounts = client.getAccounts().stream().map(account -> new AccountDTO(account)).collect(Collectors.toSet());
-        this.loans = client.getClientLoans().stream().map(loan -> new ClientLoanDTO(loan)).collect(Collectors.toSet());
-        this.cards = client.getCards().stream().map(card -> new CardDTO(card)).collect(Collectors.toSet());
+        this.accounts = client.getAccounts().stream().map(AccountDTO::new).collect(Collectors.toSet());
+        this.loans = client.getClientLoans().stream().map(ClientLoanDTO::new).collect(Collectors.toSet());
+        this.cards = client.getCards().stream().map(CardDTO::new).collect(Collectors.toSet());
         }
         public Long getId() {
             return id;

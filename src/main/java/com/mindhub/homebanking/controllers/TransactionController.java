@@ -1,23 +1,42 @@
 package com.mindhub.homebanking.controllers;
 
-import com.mindhub.homebanking.dtos.TransactionDTO;
+import com.mindhub.homebanking.models.Account;
+import com.mindhub.homebanking.models.Transaction;
+import com.mindhub.homebanking.models.TransactionType;
+import com.mindhub.homebanking.repositories.AccountRepository;
 import com.mindhub.homebanking.repositories.TransactionRepository;
-import java.util.List;
+import com.mindhub.homebanking.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import static java.util.stream.Collectors.toList;
+
+import java.time.LocalDate;
 
 @RestController
-@RequestMapping("/api")
 public class TransactionController {
-    @Autowired
-    private TransactionRepository transactionRepository;
-
-    @RequestMapping("/transactions")
-    public List<TransactionDTO> getTransactions() {
-        return transactionRepository.findAll().stream()
-                .map(transaction -> new TransactionDTO(transaction))
-                .collect(toList());
-    }
-}
+	
+	@Autowired
+	private TransactionService transactionService;
+	
+	@Transactional
+	@RequestMapping(path = "/api/transactions", method = RequestMethod.POST)
+	public ResponseEntity<Object> create(Authentication authentication,
+	                                     @RequestParam double amount,
+	                                     @RequestParam String description,
+	                                     @RequestParam String fromAccountNumber,
+	                                     @RequestParam String toAccountNumber
+	) {
+		try {
+			transactionService.create(authentication, amount, description, fromAccountNumber, toAccountNumber);
+			return new ResponseEntity<>(HttpStatus.CREATED);
+		} catch (Exception ex) {
+			return new ResponseEntity<>(ex.getMessage(), HttpStatus.FORBIDDEN);
+		}
+	}
+} 

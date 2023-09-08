@@ -3,65 +3,67 @@ package com.mindhub.homebanking.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import static java.util.stream.Collectors.toList;
+import java.util.stream.Collectors;
+
 @Entity
 public class Loan {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+	@GenericGenerator(name = "native", strategy = "native")
+	private long Id;
+	private String name;
+	private double maxAmount;
+	@ElementCollection
+	private List<Integer> payments;
 
-		@Id
-		@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-		@GenericGenerator(name = "native", strategy = "native")
-		private long Id;
-		private String name;
-		private double maxAmount;
-		@ElementCollection
-		@Column(name="payments")
-		private List<Integer> payments = new ArrayList<>();
+	@OneToMany(mappedBy = "loan", fetch = FetchType.EAGER)
+	private Set<ClientLoan> clientLoans = new HashSet<>();
 
-		@OneToMany(mappedBy = "loan", fetch = FetchType.EAGER)
-		private Set<ClientLoan> clientLoans = new HashSet<>();
+	public Loan() {
+	}
 
-		public Loan() {
-		}
+	public Loan(String name, Double maxAmount, List<Integer> payments) {
+		this.name = name;
+		this.maxAmount = maxAmount;
+		this.payments = payments;
+	}
 
-		public Loan(String name, double maxAmount, List<Integer> payments) {
-			this.name = name;
-			this.maxAmount = maxAmount;
-			this.payments = payments;
-		}
-
-		public long getId() {
+	public long getId() {
 			return Id;
 		}
-		public String getName() {
+	public String getName() {
 			return name;
 		}
-		public void setName(String name) {
+	public void setName(String name) {
 			this.name = name;
 		}
-		public double getMaxAmount() {
+	public double getMaxAmount() {
 			return maxAmount;
 		}
-		public void setMaxAmount(double maxAmount) {
+	public void setMaxAmount(double maxAmount) {
 			this.maxAmount = maxAmount;
 		}
-		public List<Integer> getPayments() {
+	public List<Integer> getPayments() {
 			return payments;
 		}
-		public void setPayments(List<Integer> payments) {
+	public void setPayments(List<Integer> payments) {
 			this.payments = payments;
 		}
-		public Set<ClientLoan> getClients() {
-			return clientLoans;
-		}
-		public void setClients(Set<ClientLoan> clients) {
+	public void setClients(Set<ClientLoan> clients) {
 			this.clientLoans = clients;
 		}
-		public void addClient(ClientLoan client) {
-			client.setLoan(this);
-			clientLoans.add(client);
-		}
+	public void addClient(ClientLoan client) {
+		client.setLoan(this);
+		clientLoans.add(client);
 	}
+	public Set<ClientLoan> getClientLoans() {
+		return clientLoans;
+	}
+
+	@JsonIgnore
+	public Set<Client> getClients() { return this.clientLoans.stream().map(ClientLoan::getClient).collect(Collectors.toSet()); }
+	public void setClientLoans(Set<ClientLoan> clientLoans) { this.clientLoans = clientLoans; }
+}
