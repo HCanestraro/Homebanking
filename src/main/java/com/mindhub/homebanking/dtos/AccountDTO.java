@@ -1,9 +1,11 @@
 package com.mindhub.homebanking.dtos;
 
 import com.mindhub.homebanking.models.Account;
+import com.mindhub.homebanking.models.Transaction;
 import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.List;
 
 public class AccountDTO {
     private long id;
