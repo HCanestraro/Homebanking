@@ -38,11 +38,11 @@ public class HomebankingApplication {
 		return (args) -> {
 			// save a client
 			
-			Client client = new Client("Melba", "Morel", "melba@mindhub.com", passwordEncoder.encode("123"));
+			Client client = new Client("Melba", "Morel", "melba@mindhub.com", passwordEncoder.encode("melba1212"));
 			clientRepository.save(client);
-			Client client1 = new Client("Juan", "Garc├¡a", "juan@mindhub.com", passwordEncoder.encode("321"));
+			Client client1 = new Client("Henry", "Denver", "henryc.denver@gmail.com", passwordEncoder.encode("henry1212"));
 			clientRepository.save(client1);
-			Client client3 = new Client("Admin", "Admin", "admin@mindhub.com", passwordEncoder.encode("123"));
+			Client client3 = new Client("Admin", "Admin", "admin@mindhub.com", passwordEncoder.encode("admin1212"));
 			clientRepository.save(client3);
 			Account account1 = new Account("VIN001", LocalDate.now(), 5000, client);
 			account1.setClient(client);
