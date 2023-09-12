@@ -2,12 +2,16 @@ package com.mindhub.homebanking;
 
 import com.mindhub.homebanking.models.*;
 import com.mindhub.homebanking.repositories.*;
+
+
+import com.mindhub.homebanking.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,6 +27,7 @@ public class HomebankingApplication {
 	PasswordEncoder passwordEncoder;
 	@Bean
 	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository, CardRepository cardRepository) {
+		
 		return (args) -> {
 			Client client = new Client("Melba", "Morel", "melba@mindhub.com", passwordEncoder.encode("melba1212"));
 			clientRepository.save(client);
@@ -49,10 +54,10 @@ public class HomebankingApplication {
 			Transaction transaction = new Transaction(TransactionType.DEBIT, 1000.00, "extraction", LocalDate.now(), account1);
 			transactionRepository.save(transaction);
 			Transaction transaction1 = new Transaction(TransactionType.CREDIT, 5000, "deposit", LocalDate.now(), account1);
-			List<Transaction> transactionsS = new ArrayList<>();
-			transactionsS.add(transaction);
-			transactionsS.add(transaction1);
-			account1.addTransaction(transactionsS);
+
+			account1.addTransaction(transaction);
+			account1.addTransaction(transaction1);
+
 			accountRepository.save(account1);
 			transactionRepository.save(transaction1);
 			Loan loan1 = new Loan("Hipotecario", 500000, Arrays.asList(6, 12, 24, 36, 48, 60));
@@ -92,7 +97,6 @@ public class HomebankingApplication {
 			clientRepository.save(client1);
 			
 			Card card1 = new Card(client, client.getFirstName() + " " + client.getLastName(), CardType.DEBIT, CardColor.GOLD, "123456789", 789, LocalDate.now().plusYears(5), LocalDate.now());
-			
 			card1.setClient(client);
 			cardRepository.save(card1);
 			clientRepository.save(client);

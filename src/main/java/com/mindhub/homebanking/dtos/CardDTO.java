@@ -35,29 +35,26 @@ public class CardDTO {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public String getCardHolder() {
-		return cardHolder;
-	}
-	public void setCardHolder(String cardholder) {
-		this.cardHolder = cardholder;
-	}
 	public CardType getType() {
 		return type;
 	}
 	public void setType(CardType type) {
 		this.type = type;
 	}
-	public CardColor getColor() {
-		return color;
-	}
-	public void setColor(CardColor color) {
-		this.color = color;
-	}
 	public String getNumber() {
 		return number;
 	}
 	public void setNumber(String number) {
 		this.number = number;
+	}
+	public void setCardHolder(String cardholder) {
+		this.cardHolder = cardholder;
+	}
+	public CardColor getColor() {
+		return color;
+	}
+	public void setColor(CardColor color) {
+		this.color = color;
 	}
 	public int getCvv() {
 		return cvv;
